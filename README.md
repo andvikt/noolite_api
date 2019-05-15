@@ -1,7 +1,7 @@
 # Noolite API integration
-Интеграция устройств noolite в python
+Интеграция устройств noolite в python, полностью асинхронная работа
 
-# MTRF-64
+## MTRF-64
 Поддерживается отправка и прием команд на адаптер MTRF-64 через serial-порт. Команды от 
 адаптера перенаправляются в колбэк пользователя. Команду можно передать как есть, а так же если оформить
 колбэк специальным декоратором, то передается готовый распарсеный объект нужного типа: (датчик температуры, датчик 
@@ -30,6 +30,27 @@ async def main():
 loop = asyncio.get_event_loop()
 loop.create_task(main())
 loop.run_forever()
+```
+## Ethernet hub
+Так же поддерживается работа с Ethernet-шлюзом PR1132
+```python
+from noolite_serial import NooliteEthernet, dispatch_command
+import asyncio
 
+
+async def test_callback(t):
+    print(f'Recieve sensors: {t}')
+
+
+nl = NooliteEthernet(host='192.168.0.1', update_interval=30, cb_sensors=test_callback)
+
+
+async def main():
+    nl.start_listen()
+    nl.send_api('on', 1)
+
+loop = asyncio.get_event_loop()
+loop.create_task(main())
+loop.run_forever()
 
 ```

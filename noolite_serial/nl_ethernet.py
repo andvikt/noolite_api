@@ -15,19 +15,16 @@ class NooliteEthernet(NooliteBase):
     """
     def __init__(self
                  , host
-                 , repeat
                  , update_interval = None
                  , cb_sensors: Callable[[dict], Any] = None
                  ):
         """
 
         :param host:
-        :param repeat:
         :param update_interval: периодичность обновления сенсоров в секундах
         :param cb_sensors: колбэк на обновлении сенсоров
         """
         self.host=host
-        self.repeat=repeat
         self.lck=asyncio.locks.Lock()
         self.update_interval = update_interval
         self.cb_sensors = cb_sensors
