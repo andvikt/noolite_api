@@ -40,3 +40,5 @@ dispatching_constructors = (
 )
 api_commands = {x[3].strip().lower(): x[0] for x in dispatching_constructors}
 dispatchers = {x[0]: (x[1], x[2]) for x in dispatching_constructors}
+SENS_TEMP = '001'
+SENS_HUM_TEMP = '010'
