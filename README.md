@@ -11,10 +11,11 @@
 
 Пример:
 ```python
-from noolite_serial import NooliteSerial
+from noolite_serial import NooliteSerial, dispatch_command
 import asyncio
 
 
+@dispatch_command
 async def test_callback(t):
     print(t)
 
@@ -29,5 +30,6 @@ async def main():
 loop = asyncio.get_event_loop()
 loop.create_task(main())
 loop.run_forever()
+
 
 ```
