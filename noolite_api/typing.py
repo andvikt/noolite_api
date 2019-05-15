@@ -36,7 +36,6 @@ class EthernetSensor:
     status: str
     humidity: float = None
 
-
 class NooliteCommand(_NooliteCommand):
     """
     Автоматический расчет crc если команда исходящая

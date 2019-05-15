@@ -1,9 +1,25 @@
 from .typing import NooliteCommand
 from .const import api_commands
 import asyncio
+from typing import Dict, Callable
 
 
 class NooliteBase(object):
+
+    def __new__(cls, *args, **kwargs):
+        obj = object.__new__(cls)
+        obj.callbacks: Dict[int, Callable] = {}
+        return obj
+
+    def reg_callback(self, channel: int, foo: Callable):
+        """
+        Регистрирует колбэк
+        :param channel:
+        :param foo:
+        :return:
+        """
+        assert asyncio.iscoroutinefunction(foo), f'{foo} must be cotoutinefunction'
+        self.callbacks[channel] = foo
 
     async def send_command(self, command: NooliteCommand):
         raise NotImplementedError

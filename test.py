@@ -2,13 +2,11 @@ from noolite_api import NooliteSerial, dispatch_command
 import asyncio
 
 
-@dispatch_command
 async def test_callback(t):
-    print(t)
+    print(f'Callback {t}')
 
-
-nl = NooliteSerial(tty_name='test', input_command_callback_method=test_callback)
-
+nl = NooliteSerial(tty_name='test')
+nl.reg_callback(1, test_callback)
 
 async def main():
     nl.start_listen()

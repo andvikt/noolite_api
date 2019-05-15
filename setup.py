@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='noolite_api',
-    version='0.1.3',
+    version='0.1.4',
     packages=['noolite_api'],
     url='https://github.com/andvikt/noolite_serial',
     license='BSD',

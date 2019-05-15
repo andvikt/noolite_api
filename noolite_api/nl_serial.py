@@ -21,17 +21,14 @@ class NooliteSerial(NooliteBase):
     """
     def __init__(self
                  , tty_name: str
-                 , input_command_callback_method: Callable[[NooliteCommand], Any]
                  , loop: Optional[asyncio.AbstractEventLoop] = None):
         """
         :param tty_name: имя порта
         :param input_command_callback_method: колбэк на входящие сообщения
         :param loop: eventloop, по умолчанию текущий евентлуп
         """
-        assert asyncio.iscoroutinefunction(input_command_callback_method), "callback must be coroutine"
         self.tty = self._get_tty(tty_name)
         self.responses = []
-        self.input_command_callback_method = input_command_callback_method
         self._loop = loop
         #работа с очередью исходящих сообщений
         self.send_lck = asyncio.Lock()
@@ -73,7 +70,8 @@ class NooliteSerial(NooliteBase):
             resp = NooliteCommand(*list(in_bytes))
             if not self.cancel_waiting(resp):
                 logger.debug('Incoming command: {}'.format(resp))
-                self.loop.create_task(self.input_command_callback_method(resp))
+                remote = (dispatchers.get(resp.cmd) or NooliteRemote)(resp)
+                self.loop.create_task(self.callbacks[resp.ch](remote))
 
     async def send_command(self, command: NooliteCommand):
         """

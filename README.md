@@ -3,25 +3,23 @@
 
 ## MTRF-64
 Поддерживается отправка и прием команд на адаптер MTRF-64 `https://www.noo.com.by/mtrf-64.html` через serial-порт. Команды от 
-адаптера перенаправляются в колбэк пользователя. Команду можно передать как есть, а так же если оформить
-колбэк специальным декоратором, то передается готовый распарсеный объект нужного типа: (датчик температуры, датчик 
-движения или обычные кнопки) 
+адаптера перенаправляются в колбэк пользователя. Колбэки регистрируются на канал, на каждом канале может быть 
+зарегистрирован только один колбэк, колбэк должен на вход принимать один аргумент - это объект описывающий поступившую 
+команду
 
 Библиотека разрабатывалась для работы с  Нome-assistant, но никто не мешает использовать ее и за пределами HA
 
 Пример:
 ```python
-from noolite_api import NooliteSerial, dispatch_command
+from noolite_api import NooliteSerial, dispatch_command, typing
 import asyncio
 
 
-@dispatch_command
-async def test_callback(t):
-    print(t)
+async def test_callback(t: typing.NooliteRemote):
+    print(f'Callback {t}')
 
-
-nl = NooliteSerial(tty_name='test', input_command_callback_method=test_callback)
-
+nl = NooliteSerial(tty_name='test')
+nl.reg_callback(1, test_callback)
 
 async def main():
     nl.start_listen()
@@ -30,6 +28,7 @@ async def main():
 loop = asyncio.get_event_loop()
 loop.create_task(main())
 loop.run_forever()
+
 ```
 ## Ethernet hub
 Так же поддерживается работа с Ethernet-шлюзом PR1132 `https://www.noo.com.by/Ethernet_PR1132.html`
