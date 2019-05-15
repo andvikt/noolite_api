@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from noolite_serial.typing import TempHumSensor, MotionSensor
+from noolite_api.typing import TempHumSensor, MotionSensor
 
 logger = getLogger(__name__)
 

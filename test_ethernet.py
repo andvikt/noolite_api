@@ -1,4 +1,4 @@
-from noolite_serial import NooliteEthernet, dispatch_command
+from noolite_api import NooliteEthernet, dispatch_command
 import asyncio
 
 

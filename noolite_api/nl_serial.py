@@ -1,4 +1,4 @@
-from noolite_serial.const import api_commands, dispatchers
+from noolite_api.const import api_commands, dispatchers
 from .typing import NooliteCommand, NooliteRemote, BaseNooliteRemote
 from .const import logger
 from .nl_base import NooliteBase

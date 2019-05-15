@@ -11,7 +11,7 @@
 
 Пример:
 ```python
-from noolite_serial import NooliteSerial, dispatch_command
+from noolite_api import NooliteSerial, dispatch_command
 import asyncio
 
 
@@ -34,7 +34,7 @@ loop.run_forever()
 ## Ethernet hub
 Так же поддерживается работа с Ethernet-шлюзом PR1132 `https://www.noo.com.by/Ethernet_PR1132.html`
 ```python
-from noolite_serial import NooliteEthernet, dispatch_command
+from noolite_api import NooliteEthernet, dispatch_command
 import asyncio
 
 

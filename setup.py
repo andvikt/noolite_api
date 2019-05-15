@@ -4,9 +4,9 @@ with open('requirements.txt', 'r') as f:
     requirements = f.readlines()
 
 setup(
-    name='noolite_serial',
+    name='noolite_api',
     version='0.1.1',
-    packages=['noolite_serial'],
+    packages=['noolite_api'],
     url='https://github.com/andvikt/noolite_serial',
     license='BSD',
     author='andrewgermanovich',
