@@ -27,7 +27,7 @@ dispatching_constructors = (
     , (16	, None, 'roll_colour 	', 'Запускает плавное изменение цвета в RGB- контроллере по радуге')
     , (17	, None, 'switch_colour 	', 'Переключение между стандартными цветами в RGB-контроллере.')
     , (18	, None, 'switch_mode 	', 'Переключение между режимами RGB- контроллера.')
-    , (19	, None, 'speed_ ', 'Mode _Back 	Запускает изменение скорости работы режимов RGB контроллера в обратном направлении.')
+    , (19	, None, 'speed_Mode_Back', 	'Запускает изменение скорости работы режимов RGB контроллера в обратном направлении.')
     , (20	, None, 'battery_low 	', 'У устройства, которое передало данную команду, разрядился элемент питания.')
     , (21	, TempHumSensor, 'sens_temp_humi 	', 'Передает данные о температуре, влажности и состоянии элементов.')
     , (25	, MotionSensor, 'temporary_on 	', 'Включить свет на заданное время. Время в 5- секундных тактах передается в расширении (см. описание A).')
@@ -42,3 +42,33 @@ api_commands = {x[3].strip().lower(): x[0] for x in dispatching_constructors}
 dispatchers = {x[0]: (x[1], x[2]) for x in dispatching_constructors}
 SENS_TEMP = '001'
 SENS_HUM_TEMP = '010'
+
+
+OFF = 0
+BRIGHT_DOWN = 1
+ON = 2
+BRIGHT_UP = 3
+SWITCH = 4
+BRIGHT_BACK = 5
+SET_BRIGHTNESS = 6
+LOAD_PRESET = 7
+SAVE_PRESET = 8
+UNBIND = 9
+STOP_REG = 10
+BRIGHT_STEP_DOWN = 11
+BRIGHT_STEP_UP = 12
+BRIGHT_REG = 13
+BIND = 15
+ROLL_COLOUR = 16
+SWITCH_COLOUR = 17
+SWITCH_MODE = 18
+SPEED_MODE_BACK = 19
+BATTERY_LOW = 20
+SENS_TEMP_HUMI = 21
+TEMPORARY_ON = 25
+MODES = 26
+READ_STATE = 128
+WRITE_STATE = 129
+SEND_STATE = 130
+SERVICE = 131
+CLEAR_MEMORY = 132

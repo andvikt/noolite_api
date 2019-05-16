@@ -24,7 +24,7 @@ class NooliteBase(object):
     async def send_command(self, command: NooliteCommand):
         raise NotImplementedError
 
-    def send_api(self, cmd_name, ch, br=0, **kwargs):
+    def send_api(self, ch, br=0, cmd_name=None, **kwargs):
         """
         Отправляет команду из справочника команд
         :param cmd_name: название команды (как в справочнике)
@@ -36,5 +36,7 @@ class NooliteBase(object):
         if br:
             kwargs['fmt'] = 1
             kwargs['d1'] = br
-        asyncio.ensure_future(self.send_command(NooliteCommand(cmd = api_commands[cmd_name], ch=ch, **kwargs)))
+        if cmd_name is not None:
+            kwargs.update(cmd=api_commands[cmd_name])
+        asyncio.ensure_future(self.send_command(NooliteCommand(ch=ch, **kwargs)))
 

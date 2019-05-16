@@ -37,7 +37,7 @@ class NooliteEthernet(NooliteBase):
             async with aiohttp.request('get', url) as req:
                 await req.read()
 
-    def send_api(self, cmd_name, ch, br=0, **kwargs):
+    def send_api(self, ch, br=0, cmd_name=None, **kwargs):
         asyncio.ensure_future(self._request(ch=ch, cmd=api_commands[cmd_name], br=br))
 
     async def update_sensors(self):

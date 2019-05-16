@@ -24,7 +24,6 @@ class NooliteSerial(NooliteBase):
                  , loop: Optional[asyncio.AbstractEventLoop] = None):
         """
         :param tty_name: имя порта
-        :param input_command_callback_method: колбэк на входящие сообщения
         :param loop: eventloop, по умолчанию текущий евентлуп
         """
         self.tty = self._get_tty(tty_name)
@@ -32,8 +31,8 @@ class NooliteSerial(NooliteBase):
         self._loop = loop
         #работа с очередью исходящих сообщений
         self.send_lck = asyncio.Lock()
-        self.wait_ftr: asyncio.Future = None
-        self.wait_out: NooliteCommand = None
+        self.wait_ftr: Optional[asyncio.Future] = None
+        self.wait_out: Optional[NooliteCommand] = None
 
     @property
     def loop(self):
