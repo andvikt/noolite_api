@@ -1,5 +1,6 @@
 from dataclasses import dataclass, astuple
 import time
+from .const import APPROVAL_TIMEOUT
 
 MODE_SEND = 1
 MODE_RECIEVE = 2
@@ -27,6 +28,7 @@ class _NooliteCommand:
     id3: int = 0
     crc: int = 0
     sp: int = 172
+    commit: bool = APPROVAL_TIMEOUT
 
 
 @dataclass()

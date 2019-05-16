@@ -8,8 +8,6 @@ import asyncio
 from dataclasses import astuple
 import serial
 
-APPROVAL_TIMEOUT = 1
-
 
 class NotApprovedError(Exception):
     pass
@@ -43,7 +41,7 @@ class NooliteSerial(NooliteBase):
         Начать прослушивание порта, можно запускать только при наличии работающего eventloop
         :return:
         """
-        self.loop.add_reader(self.tty.fd, self.inf_reading)
+        self.loop.add_reader(self.tty.fd, self.handle)
 
     def cancel_waiting(self, msg: NooliteCommand):
         """
@@ -59,7 +57,7 @@ class NooliteSerial(NooliteBase):
         else:
             return False
 
-    def inf_reading(self):
+    def handle(self):
         """
         Хендлер входящих данных от адаптера
         :return:
@@ -70,7 +68,11 @@ class NooliteSerial(NooliteBase):
             if not self.cancel_waiting(resp):
                 logger.debug('Incoming command: {}'.format(resp))
                 remote = (dispatchers.get(resp.cmd) or NooliteRemote)(resp)
-                self.loop.create_task(self.callbacks[resp.ch](remote))
+                callback = self.callbacks.get(resp.ch)
+                if asyncio.iscoroutinefunction(callback):
+                    self.loop.create_task(self.callbacks[resp.ch](remote))
+                else:
+                    logger.warning(f'callback for channel {resp.ch} not found')
 
     async def send_command(self, command: NooliteCommand):
         """
@@ -85,8 +87,10 @@ class NooliteSerial(NooliteBase):
             self.tty.write(bytearray(astuple(command)))
             logger.info('Time to write: {}'.format(time.time() - before))
 
-            async def waiter():
-                await asyncio.sleep(APPROVAL_TIMEOUT)
+            async def waiter(cmd: NooliteCommand):
+                if cmd.commit is None:
+                    raise asyncio.CancelledError
+                await asyncio.sleep(cmd.commit)
                 return True
 
             # отправляем команду и ждем секунду, если придет ответ, то ожидание будет отменено с ошибкой CancelledError
@@ -94,7 +98,7 @@ class NooliteSerial(NooliteBase):
             # команда не подтверждена
 
             try:
-                self.wait_ftr = asyncio.ensure_future(waiter())
+                self.wait_ftr = asyncio.ensure_future(waiter(command))
                 await self.wait_ftr
             except asyncio.CancelledError:
                 return True

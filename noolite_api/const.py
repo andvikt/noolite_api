@@ -72,3 +72,14 @@ WRITE_STATE = 129
 SEND_STATE = 130
 SERVICE = 131
 CLEAR_MEMORY = 132
+
+services = {
+    'BIND_TX': {'cmd': BIND, 'commit': None}
+    , 'BIND_RX': {'mode': 1, 'ctr': 3, 'commit': 40}
+    , 'UNBIND_TX': {'cmd': UNBIND, 'commit': None}
+    , 'UNBIND_RX': {'mode': 1, 'ctr': 5, 'commit': None}
+    , 'RESET_ALL': {'mode': 1, 'ctr': 6, 'd0': 170, 'd1': 85, 'd2': 170, 'd3': 85, 'commit': None}
+}
+
+
+APPROVAL_TIMEOUT = 1
